@@ -1,47 +1,83 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdarg.h>
+
 /**
-* _printf - produces output according to a format
-* @format: is a character string
-* Return: the number of characters printed
-*/
+ * _printf - Custom printf function to produce output according to the format.
+ * @format: Format string.
+ * Return: Number of characters printed (excluding the null byte used to end output to strings).
+ */
 int _printf(const char *format, ...)
 {
-	va_list list;
-	int val, j, i = 0, n = 0;
-	print printype[] = {{'c', printchar}, {'s', printstr}, {'d', printnum},
-		{'i', printnum}, {'b', printbinary}, {'x', printhexa},
-		{'X', printHEXA}, {'o', printoctal}, {'u', printunsigned}};
+    int count = 0;
+    va_list args;
+    va_start(args, format);
 
-	va_start(list, format);
-	if (format == NULL || (format[i] == '%' && format[i + 1] == '\0'))
-		return (-1);
-	while (format[i] != '\0')
-	{
-		if (format[i] == '%')
-		{
-			i++;
-			for (j = 0; j < 9; j++)
-			{
-				if (printype[j].t == format[i])
-				{
-					val = printype[j].f(list);
-					if (val == -1)
-						return (-1);
-					n += val;
-					break;
-				}
-			}
-			if (j == 9)
-			{
-				if (format[i] != '%')
-					n += _putchar('%');
-				n += _putchar(format[i]);
-			}
-		}
-		else
-			n += _putchar(format[i]);
-		i++;
-	}
-	va_end(list);
-	return (n);
+    while (*format)
+    {
+        if (*format != '%')
+        {
+            putchar(*format);
+            count++;
+        }
+        else
+        {
+            format++; // Move past the '%'
+            switch (*format)
+            {
+                case 'c':
+                {
+                    char ch = va_arg(args, int);
+                    putchar(ch);
+                    count++;
+                    break;
+                }
+                case 's':
+                {
+                    char *str = va_arg(args, char *);
+                    if (str)
+                    {
+                        while (*str)
+                        {
+                            putchar(*str);
+                            str++;
+                            count++;
+                        }
+                    }
+                    break;
+                }
+                case '%':
+                    putchar('%');
+                    count++;
+                    break;
+                default:
+                    // Invalid conversion specifier, just print the '%'
+                    putchar('%');
+                    putchar(*format);
+                    count += 2;
+                    break;
+            }
+        }
+        format++;
+    }
+
+    va_end(args);
+    return count;
 }
+
+int main()
+{
+    int num = 42;
+    char ch = 'A';
+    char *str = "Hello, World!";
+
+    // Test the _printf function
+    int printed_chars = _printf("This is a number: %d\n", num);
+    printed_chars += _printf("This is a character: %c\n", ch);
+    printed_chars += _printf("This is a string: %s\n", str);
+    printed_chars += _printf("This is a percent sign: %%\n");
+
+    printf("Total characters printed: %d\n", printed_chars);
+
+    return 0;
+}
+
