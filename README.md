@@ -57,3 +57,8 @@ Conversion specifiers to handle: d, i, u, o, x, X
 	R: prints the rot13'ed string
 
 15. *All the above options work well together.
+
+### Authors &copy;
+
+- [Triza](https://github.com/Treey30)
+- [Davie Wisdom](https://github.com/daviewisdm)
