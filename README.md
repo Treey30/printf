@@ -56,7 +56,7 @@ Conversion specifiers to handle: d, i, u, o, x, X
 14. Handle the following custom conversion specifier:
 	R: prints the rot13'ed string
 
-15. *All the above options work well together.
+15. *All the above options work well together.(inshallah)
 
 ### Authors &copy;
 
